@@ -19,21 +19,28 @@ class Simulation {
     sf::Texture backgroundTexture;
     sf::Sprite background;
 
+    std::vector<std::string> textureList;
     std::unordered_map<std::string, sf::Texture> aircraftTextures;
     std::vector<Aircraft> aircraft;
 
     float scale = 1.f;
 
-    const uint64_t chance = 7;
+    const uint64_t chance = 3;
+    uint64_t width;
+    uint64_t height;
+
+    int64_t removalBound;
 
     void handleEvents();
     void update();
     void render();
     void randomAircraft();
+    void removeDistantAircraft();
 
     void loadTexture(const std::string & texture);
-    void loadAircraftTextures(const std::string & aircraft);
-    void loadTexturesFromFile(const std::string & filename);
+    void loadAircraftTexturePair(const std::string & aircraft);
+    void loadAircraftTextures();
+    void loadTextureList(const std::string & filename);
 
     void initTextures();
     void initBackground();

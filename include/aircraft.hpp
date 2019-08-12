@@ -10,12 +10,12 @@
 
 class Aircraft: protected sf::Sprite {
 
-    const sf::Texture & yellow;
-    const sf::Texture & red;
+    std::reference_wrapper<const sf::Texture> yellow;
+    std::reference_wrapper<const sf::Texture> red;
 
     bool selected = false;
 
-    uint64_t velocity = 0;
+    int64_t velocity = 0;
     float desiredRotation = 0.f;
     float maxRotation = 3.5f;
 
@@ -26,8 +26,13 @@ public:
     Aircraft(const sf::Texture & yellow, const sf::Texture & red);
 
     void update();
+    void setPosition(float x, float y);
+    void setHeading(float heading);
+    void setVelocity(int64_t velocity);
 
+    sf::Vector2f getPosition() const;
 
+    const sf::Sprite & drawable() const;
 };
 
 #endif //AIRPORTSIM_AIRCRAFT_HPP

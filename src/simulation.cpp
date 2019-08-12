@@ -22,12 +22,18 @@ void Simulation::loadTexture(const std::string & texture) {
     aircraftTextures[texture] = tx;
 }
 
-void Simulation::loadAircraftTextures(const std::string & aircraft) {
+void Simulation::loadAircraftTexturePair(const std::string & aircraft) {
     loadTexture(aircraft);
     loadTexture(aircraft + "_red");
 }
 
-void Simulation::loadTexturesFromFile(const std::string & filename) {
+void Simulation::loadAircraftTextures() {
+    for (const auto & texture : textureList) {
+        loadAircraftTexturePair(texture);
+    }
+}
+
+void Simulation::loadTextureList(const std::string &filename) {
 
     std::ifstream is(filename);
 
@@ -39,7 +45,7 @@ void Simulation::loadTexturesFromFile(const std::string & filename) {
         std::string line;
         std::getline(is, line);
         if (not line.empty()) {
-            loadAircraftTextures(line);
+            textureList.emplace_back(line);
         }
     }
 
@@ -48,7 +54,8 @@ void Simulation::loadTexturesFromFile(const std::string & filename) {
 void Simulation::initTextures() {
     backgroundTexture.loadFromFile("resources/kxb-airport.png");
     backgroundTexture.setSmooth(true);
-    loadTexturesFromFile("resources/textures.txt");
+    loadTextureList("resources/textures.txt");
+    loadAircraftTextures();
 }
 
 void Simulation::initWindow() {
@@ -67,12 +74,16 @@ Simulation::Simulation() {
     initTextures();
     calcScale();
     initBackground();
+
+    width = window.getSize().x;
+    height = window.getSize().y;
+    removalBound = width / 4;
 }
 
 void Simulation::update() {
 
-    if (Random::randUInt(0, 99)) {
-        randomAircraft();
+    if (Random::randUInt(0, 99) <= chance) {
+       randomAircraft();
     }
 
     for (Aircraft & a : aircraft) {
@@ -82,6 +93,11 @@ void Simulation::update() {
 }
 
 void Simulation::run() {
+
+    aircraft.emplace_back(aircraftTextures["a380"], aircraftTextures["a380_red"]);
+    aircraft.back().setHeading(300);
+    aircraft.back().setPosition(width / 2, height / 2);
+    aircraft.back().setVelocity(410);
 
     while (window.isOpen()) {
 
@@ -96,6 +112,9 @@ void Simulation::run() {
 void Simulation::render() {
     window.clear(sf::Color::Red);
     window.draw(background);
+    for (const auto & ac : aircraft) {
+        window.draw(ac.drawable());
+    }
     window.display();
 }
 
@@ -136,16 +155,17 @@ void Simulation::onKeyPress(sf::Keyboard::Key key) {
 
 void Simulation::randomAircraft() {
 
+    std::string sprite = textureList[Random::randUInt(0, textureList.size() - 1)];
 
     /////////////////////////////
     //                         //
-    //           (27)          //
+    //           (09)          //
     //            N            //
     //            |            //
     //  (18) W ---+--- E (00)  //
     //            |            //
     //            S            //
-    //           (09)          //
+    //           (27)          //
     //                         //
     /////////////////////////////
 
@@ -160,30 +180,30 @@ void Simulation::randomAircraft() {
     int64_t x;
 
     if (fixedVert) {
-        x = Random::randInt(-50, 1250);
+        x = Random::randInt(-(removalBound / 2), width + (removalBound / 2));
     } else {
         if (eastbound) {
-            x = -50;
+            x = -(removalBound / 2);
         } else {
-            x = 1250;
+            x = width + (removalBound / 2);
         }
     }
     int64_t y;
     if (fixedHor) {
-        x = Random::randInt(-50, 850);
+        y = Random::randInt(-(removalBound / 2), height + (removalBound / 2));
     } else {
         if (southbound) {
-            x = -50;
+            y = -(removalBound / 2);
         } else {
-            x = 850;
+            y = height + (removalBound / 2);
         }
     }
 
     std::pair<uint64_t, uint64_t> hBounds;
-    if (eastbound and northbound) hBounds = std::make_pair(270, 360);
-    else if (eastbound && southbound) hBounds = std::make_pair(0, 90);
-    else if (westbound && northbound) hBounds = std::make_pair(180, 270);
-    else if (westbound && southbound) hBounds = std::make_pair(90, 180);
+    if (eastbound and northbound) hBounds = std::make_pair(0, 90);
+    else if (eastbound && southbound) hBounds = std::make_pair(270, 360);
+    else if (westbound && northbound) hBounds = std::make_pair(90, 180);
+    else if (westbound && southbound) hBounds = std::make_pair(180, 270);
     else hBounds = std::make_pair(0, 360);
 
     const int64_t roughHeading = Random::randInt(hBounds.first * 10, hBounds.second * 10);
@@ -191,6 +211,25 @@ void Simulation::randomAircraft() {
 
     const int64_t velocity = Random::randInt(200, 450);
 
-    return Airplane(sprite, x, y, heading, velocity)
+    aircraft.emplace_back(aircraftTextures[sprite], aircraftTextures[sprite + "_red"]);
+    Aircraft & ac = aircraft.back();
+    ac.setPosition(x, y);
+    ac.setHeading(heading);
+    ac.setVelocity(velocity);
+
+}
+
+void Simulation::removeDistantAircraft() {
+
+    for (auto it = aircraft.begin(); it != aircraft.end(); ++it) {
+        const int64_t x = it->getPosition().x;
+        const int64_t y = it->getPosition().y;
+
+        if (x < -removalBound or width + removalBound > x or
+            y < -removalBound or height + removalBound > y) {
+            aircraft.erase(it);
+            std::cout << "Erasing aircraft" << std::endl;
+        }
+    }
 
 }
