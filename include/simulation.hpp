@@ -30,6 +30,7 @@ class Simulation {
     uint64_t height;
 
     int64_t removalBound;
+    const uint64_t aircraftLimit = 20;
 
     void handleEvents();
     void update();

@@ -77,18 +77,20 @@ Simulation::Simulation() {
 
     width = window.getSize().x;
     height = window.getSize().y;
-    removalBound = width / 4;
+    removalBound = width / 2;
 }
 
 void Simulation::update() {
 
-    if (Random::randUInt(0, 99) <= chance) {
+    if (aircraftLimit < aircraft.size() and Random::randUInt(0, 99) <= chance) {
        randomAircraft();
     }
 
     for (Aircraft & a : aircraft) {
         a.update();
     }
+
+    removeDistantAircraft();
 
 }
 
@@ -128,7 +130,7 @@ void Simulation::handleEvents() {
         }
 
         if (event.type == sf::Event::KeyPressed) {
-            onKeyPress(event.key.code);
+            return onKeyPress(event.key.code);
         }
 
     }
@@ -225,10 +227,10 @@ void Simulation::removeDistantAircraft() {
         const int64_t x = it->getPosition().x;
         const int64_t y = it->getPosition().y;
 
-        if (x < -removalBound or width + removalBound > x or
-            y < -removalBound or height + removalBound > y) {
-            aircraft.erase(it);
+        if ((x < -removalBound) or (width + removalBound < x) or
+            (y < -removalBound) or (height + removalBound < y)) {
             std::cout << "Erasing aircraft" << std::endl;
+            aircraft.erase(it);
         }
     }
 
