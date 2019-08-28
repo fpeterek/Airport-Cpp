@@ -94,7 +94,7 @@ void Simulation::update() {
 
 void Simulation::run() {
 
-    aircraft.emplace_back(aircraftTextures["a380"], aircraftTextures["a380_red"]);
+    aircraft.emplace_back(aircraftTextures["a380"], aircraftTextures["a380_red"], scale);
     aircraft.back().setHeading(300);
     aircraft.back().setPosition(width / 2, height / 2);
     aircraft.back().setVelocity(410);
@@ -211,7 +211,7 @@ void Simulation::randomAircraft() {
 
     const int64_t velocity = Random::randInt(200, 450);
 
-    aircraft.emplace_back(aircraftTextures[sprite], aircraftTextures[sprite + "_red"]);
+    aircraft.emplace_back(aircraftTextures[sprite], aircraftTextures[sprite + "_red"], scale);
     Aircraft & ac = aircraft.back();
     ac.setPosition(x, y);
     ac.setHeading(heading);

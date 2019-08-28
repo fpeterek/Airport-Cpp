@@ -3,11 +3,11 @@
 //
 
 #include <cmath>
-#include <iostream>
 
 #include "aircraft.hpp"
 
-Aircraft::Aircraft(const sf::Texture & yellow, const sf::Texture & red) : yellow(yellow), red(red) {
+Aircraft::Aircraft(const sf::Texture & yellow, const sf::Texture & red, const float scale) : yellow(yellow), red(red) {
+    setScale(scale, scale);
     setOrigin(getPosition().x / 2, getPosition().y / 2);
     setTexture(this->yellow.get());
 }

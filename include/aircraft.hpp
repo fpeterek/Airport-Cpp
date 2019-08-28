@@ -23,7 +23,7 @@ class Aircraft: protected sf::Sprite {
 
 public:
 
-    Aircraft(const sf::Texture & yellow, const sf::Texture & red);
+    Aircraft(const sf::Texture & yellow, const sf::Texture & red, float scale);
 
     void update();
     void setPosition(float x, float y);
