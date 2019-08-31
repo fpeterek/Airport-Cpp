@@ -21,6 +21,9 @@ class Aircraft: protected sf::Sprite {
     float desiredRotation = 0.f;
     float maxRotation = 3.5f;
 
+    int64_t stallSpeed = 130;
+    int64_t maxSpeed = 450;
+
     void rotateAircraft();
 
 public:
@@ -31,6 +34,13 @@ public:
     void setPosition(float x, float y);
     void setHeading(float heading);
     void setVelocity(int64_t velocity);
+    void changeVelocityBy(int64_t delta);
+
+    void select();
+    void deselect();
+    bool isSelected() const;
+
+    bool contains(float x, float y) const;
 
     sf::Vector2f getPosition() const;
 

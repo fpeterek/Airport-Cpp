@@ -23,6 +23,9 @@ class Simulation {
     std::unordered_map<std::string, sf::Texture> aircraftTextures;
     std::vector<Aircraft> aircraft;
 
+    Aircraft * selected = nullptr;
+
+
     float scale = 1.f;
 
     const uint64_t chance = 3;
@@ -49,8 +52,15 @@ class Simulation {
     void calcScale();
 
     void onKeyPress(sf::Keyboard::Key key);
-    void onMouseDown(sf::Mouse::Button button);
-    void onMouseScroll(sf::Mouse::Wheel wheel);
+    void onMouseDown(sf::Event::MouseButtonEvent button);
+    void onMouseScroll(sf::Event::MouseWheelScrollEvent wheel);
+
+    void selectAircraft(int64_t x, int64_t y);
+    void selectAircraft(Aircraft & ac);
+    void deselectAircraft();
+
+    void moveAircraft(int64_t x, int64_t y);
+    void changeAircraftVelocity(int64_t delta);
 
 public:
 

@@ -8,8 +8,8 @@
 
 Aircraft::Aircraft(const sf::Texture & yellow, const sf::Texture & red, const float scale) : yellow(yellow), red(red) {
     setScale(scale, scale);
-    setOrigin(getPosition().x / 2, getPosition().y / 2);
     setTexture(this->yellow.get());
+    setOrigin(getTextureRect().width / 2, getTextureRect().height / 2);
 }
 
 
@@ -63,5 +63,33 @@ const sf::Sprite & Aircraft::drawable() const {
 
 sf::Vector2f Aircraft::getPosition() const {
     return sf::Sprite::getPosition();
+}
+
+void Aircraft::select() {
+    selected = true;
+    setTexture(red);
+}
+
+void Aircraft::deselect() {
+    selected = false;
+    setTexture(yellow);
+}
+
+bool Aircraft::isSelected() const {
+    return selected;
+}
+
+bool Aircraft::contains(const float x, const float y) const {
+    return getGlobalBounds().contains(x, y);
+}
+
+void Aircraft::changeVelocityBy(int64_t delta) {
+    velocity += delta;
+    if (velocity > maxSpeed) {
+        velocity = maxSpeed;
+    }
+    if (velocity < stallSpeed) {
+        velocity = stallSpeed;
+    }
 }
 

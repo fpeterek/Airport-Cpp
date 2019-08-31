@@ -133,19 +133,46 @@ void Simulation::handleEvents() {
             return onKeyPress(event.key.code);
         }
 
+        if (event.type == sf::Event::MouseButtonPressed) {
+            return onMouseDown(event.mouseButton);
+        }
+
+        if (event.type == sf::Event::MouseWheelScrolled) {
+            return onMouseScroll(event.mouseWheelScroll);
+        }
+
     }
 
 }
 
-void Simulation::onMouseDown(sf::Mouse::Button button) {
+void Simulation::onMouseDown(const sf::Event::MouseButtonEvent event) {
+
+    if (event.button == sf::Mouse::Left) {
+        selectAircraft(event.x, event.y);
+    }
+    if (event.button == sf::Mouse::Right) {
+        moveAircraft(event.x, event.y);
+    }
 
 }
 
-void Simulation::onMouseScroll(sf::Mouse::Wheel wheel) {
+void Simulation::onMouseScroll(const sf::Event::MouseWheelScrollEvent event) {
+
+    float delta = event.delta;
+    bool isNeg = delta > 0;
+    int64_t calcDelta = (int64_t)std::ceil(std::abs(delta)) * (isNeg ? -10 : 10);
+    changeAircraftVelocity(calcDelta);
 
 }
 
-void Simulation::onKeyPress(sf::Keyboard::Key key) {
+void Simulation::changeAircraftVelocity(const int64_t delta) {
+    if (selected == nullptr) {
+        return;
+    }
+    selected->changeVelocityBy(delta);
+}
+
+void Simulation::onKeyPress(const sf::Keyboard::Key key) {
     switch(key) {
         case sf::Keyboard::Escape:
             window.close();
@@ -233,8 +260,12 @@ void Simulation::removeDistantAircraft(const size_t index) {
 
     const bool xCond = (x < -removalBound) or ((int64_t)width + removalBound < x);
     const bool yCond = (y < -removalBound) or ((int64_t)height + removalBound < y);
+    const bool sCond = not ac.isSelected();
 
-    if (xCond or yCond) {
+    if ((xCond or yCond) and sCond) {
+        if (&ac < selected) {
+            --selected;
+        }
         aircraft.erase(aircraft.begin() + index);
         return removeDistantAircraft(index);
     }
@@ -242,3 +273,43 @@ void Simulation::removeDistantAircraft(const size_t index) {
     removeDistantAircraft(index + 1);
 
 }
+
+void Simulation::selectAircraft(int64_t x, int64_t y) {
+
+    for (Aircraft & ac : aircraft) {
+        if (ac.contains(x, y)) {
+            return selectAircraft(ac);
+        }
+    }
+
+    deselectAircraft();
+
+}
+
+void Simulation::selectAircraft(Aircraft & ac) {
+    if (&ac == selected) {
+        return;
+    }
+    deselectAircraft();
+    ac.select();
+    selected = &ac;
+}
+
+void Simulation::deselectAircraft() {
+    if (selected != nullptr) {
+        selected->deselect();
+        selected = nullptr;
+    }
+}
+
+void Simulation::moveAircraft(int64_t x, int64_t y) {
+
+    if (selected == nullptr) {
+        return;
+    }
+
+    selected->setPosition(x, y);
+
+}
+
+
