@@ -5,6 +5,8 @@
 #ifndef AIRPORTSIM_AIRCRAFT_HPP
 #define AIRPORTSIM_AIRCRAFT_HPP
 
+#include <functional>
+
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 

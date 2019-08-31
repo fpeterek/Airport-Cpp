@@ -18,8 +18,8 @@ void Aircraft::update() {
 
     const float heading = (180 + getRotation() + 90) * M_PI / 180;
     const sf::Vector2f current = getPosition();
-    const float x = current.x + std::cosf(heading) * (velocity / 350.f);
-    const float y = current.y + std::sinf(heading) * (velocity / 350.f);
+    const float x = current.x + std::cos(heading) * (velocity / 350.f);
+    const float y = current.y + std::sin(heading) * (velocity / 350.f);
 
     setPosition(x, y);
 
