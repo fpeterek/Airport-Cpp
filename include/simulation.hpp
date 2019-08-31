@@ -36,7 +36,7 @@ class Simulation {
     void update();
     void render();
     void randomAircraft();
-    void removeDistantAircraft();
+    void removeDistantAircraft(size_t index = 0);
 
     void loadTexture(const std::string & texture);
     void loadAircraftTexturePair(const std::string & aircraft);

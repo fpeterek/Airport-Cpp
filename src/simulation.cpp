@@ -82,7 +82,7 @@ Simulation::Simulation() {
 
 void Simulation::update() {
 
-    if (aircraftLimit < aircraft.size() and Random::randUInt(0, 99) <= chance) {
+    if (aircraftLimit > aircraft.size() and Random::randUInt(0, 99) <= chance) {
        randomAircraft();
     }
 
@@ -221,17 +221,24 @@ void Simulation::randomAircraft() {
 
 }
 
-void Simulation::removeDistantAircraft() {
+void Simulation::removeDistantAircraft(const size_t index) {
 
-    for (auto it = aircraft.begin(); it != aircraft.end(); ++it) {
-        const int64_t x = it->getPosition().x;
-        const int64_t y = it->getPosition().y;
-
-        if ((x < -removalBound) or (width + removalBound < x) or
-            (y < -removalBound) or (height + removalBound < y)) {
-            std::cout << "Erasing aircraft" << std::endl;
-            aircraft.erase(it);
-        }
+    if (index >= aircraft.size()) {
+        return;
     }
+
+    const Aircraft & ac = aircraft[index];
+    const int64_t x = ac.getPosition().x;
+    const int64_t y = ac.getPosition().y;
+
+    const bool xCond = (x < -removalBound) or ((int64_t)width + removalBound < x);
+    const bool yCond = (y < -removalBound) or ((int64_t)height + removalBound < y);
+
+    if (xCond or yCond) {
+        aircraft.erase(aircraft.begin() + index);
+        return removeDistantAircraft(index);
+    }
+
+    removeDistantAircraft(index + 1);
 
 }
