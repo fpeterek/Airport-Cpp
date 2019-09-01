@@ -15,6 +15,6 @@ add_executable(Airport_Cpp
         src/aircraft.cpp
         src/main.cpp
         src/random.cpp
-        src/simulation.cpp)
+        src/simulation.cpp include/aircraft_template.hpp src/aircraft_template.cpp)
 
 file(COPY resources DESTINATION .)

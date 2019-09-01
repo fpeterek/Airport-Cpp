@@ -6,7 +6,6 @@ range=3500         # nmi
 v_cruise=450       # kts
 v_max=473          # kts
 v_landing=130      # kts
-v_stall=120        # kts
 sprite=a320.png
 sprite_red=a320_red.png
 category=medium

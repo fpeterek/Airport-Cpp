@@ -6,7 +6,6 @@ range=8700         # nmi
 v_cruise=488       # kts
 v_max=513          # kts
 v_landing=130      # kts
-v_stall=120        # kts
 sprite=a350.png
 sprite_red=a350_red.png
 category=heavy

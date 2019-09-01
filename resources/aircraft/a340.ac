@@ -6,7 +6,6 @@ range=7550         # nmi
 v_cruise=470       # kts
 v_max=493          # kts
 v_landing=130      # kts
-v_stall=120        # kts
 sprite=a340.png
 sprite_red=a340_red.png
 category=heavy

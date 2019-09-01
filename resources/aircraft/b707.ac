@@ -6,7 +6,6 @@ range=5000         # nmi
 v_cruise=478       # kts
 v_max=525          # kts
 v_landing=125      # kts
-v_stall=110        # kts
 sprite=b707.png
 sprite_red=b707_red.png
 category=medium
