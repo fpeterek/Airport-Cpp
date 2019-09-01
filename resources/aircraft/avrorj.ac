@@ -1,0 +1,13 @@
+type=Avro RJ100
+mtow=42184         # Kg
+fuel=11728         # Litres
+max_altitude=35000 # Feet
+range=1800         # nmi
+v_cruise=404       # kts
+v_max=426          # kts
+v_landing=125      # kts
+v_stall=110        # kts
+sprite=avrorj.png
+sprite_red=avrorj_red.png
+category=medium
+
