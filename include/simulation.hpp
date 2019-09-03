@@ -23,8 +23,8 @@ class Simulation {
     std::unordered_map<std::string, sf::Texture> aircraftTextures;
     std::vector<Aircraft> aircraft;
 
-    Aircraft * selected = nullptr;
-
+    static const size_t noAircraftSelected = -1;
+    size_t selectedIndex = -1;
 
     float scale = 1.f;
 
@@ -34,6 +34,9 @@ class Simulation {
 
     int64_t removalBound;
     const uint64_t aircraftLimit = 20;
+
+    bool aircraftSelected();
+    Aircraft & selected();
 
     void handleEvents();
     void update();
@@ -56,7 +59,7 @@ class Simulation {
     void onMouseScroll(sf::Event::MouseWheelScrollEvent wheel);
 
     void selectAircraft(int64_t x, int64_t y);
-    void selectAircraft(Aircraft & ac);
+    void selectAircraft(size_t index);
     void deselectAircraft();
 
     void moveAircraft(int64_t x, int64_t y);

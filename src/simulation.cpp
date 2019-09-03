@@ -166,10 +166,10 @@ void Simulation::onMouseScroll(const sf::Event::MouseWheelScrollEvent event) {
 }
 
 void Simulation::changeAircraftVelocity(const int64_t delta) {
-    if (selected == nullptr) {
+    if (not aircraftSelected()) {
         return;
     }
-    selected->changeVelocityBy(delta);
+    selected().changeVelocityBy(delta);
 }
 
 void Simulation::onKeyPress(const sf::Keyboard::Key key) {
@@ -263,8 +263,8 @@ void Simulation::removeDistantAircraft(const size_t index) {
     const bool sCond = not ac.isSelected();
 
     if ((xCond or yCond) and sCond) {
-        if (&ac < selected) {
-            --selected;
+        if (index < selectedIndex) {
+            --selectedIndex;
         }
         aircraft.erase(aircraft.begin() + index);
         return removeDistantAircraft(index);
@@ -276,9 +276,9 @@ void Simulation::removeDistantAircraft(const size_t index) {
 
 void Simulation::selectAircraft(int64_t x, int64_t y) {
 
-    for (Aircraft & ac : aircraft) {
-        if (ac.contains(x, y)) {
-            return selectAircraft(ac);
+    for (size_t i = 0; i < aircraft.size(); ++i) {
+        if (aircraft[i].contains(x, y)) {
+            return selectAircraft(i);
         }
     }
 
@@ -286,30 +286,38 @@ void Simulation::selectAircraft(int64_t x, int64_t y) {
 
 }
 
-void Simulation::selectAircraft(Aircraft & ac) {
-    if (&ac == selected) {
+void Simulation::selectAircraft(const size_t i) {
+    if (selectedIndex == i) {
         return;
     }
     deselectAircraft();
-    ac.select();
-    selected = &ac;
+    aircraft[i].select();
+    selectedIndex = i;
 }
 
 void Simulation::deselectAircraft() {
-    if (selected != nullptr) {
-        selected->deselect();
-        selected = nullptr;
+    if (aircraftSelected()) {
+        selected().deselect();
+        selectedIndex = noAircraftSelected;
     }
 }
 
 void Simulation::moveAircraft(int64_t x, int64_t y) {
 
-    if (selected == nullptr) {
+    if (not aircraftSelected()) {
         return;
     }
 
-    selected->setPosition(x, y);
+    selected().setPosition(x, y);
 
+}
+
+bool Simulation::aircraftSelected() {
+    return selectedIndex != noAircraftSelected;
+}
+
+Aircraft & Simulation::selected() {
+    return aircraft[selectedIndex];
 }
 
 
