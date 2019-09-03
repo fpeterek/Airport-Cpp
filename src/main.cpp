@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "simulation.hpp"
 
 int main(int argc, const char * argv[]) {
