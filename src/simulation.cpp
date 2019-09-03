@@ -160,7 +160,7 @@ void Simulation::onMouseScroll(const sf::Event::MouseWheelScrollEvent event) {
 
     float delta = event.delta;
     bool isNeg = delta > 0;
-    int64_t calcDelta = (int64_t)std::ceil(std::abs(delta)) * (isNeg ? -10 : 10);
+    int64_t calcDelta = (int64_t)(std::ceil(std::abs(delta)) * 10) / 10 * (isNeg ? 5 : -5);
     changeAircraftVelocity(calcDelta);
 
 }
