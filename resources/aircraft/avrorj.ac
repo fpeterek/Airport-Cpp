@@ -6,7 +6,7 @@ range=1800         # nmi
 v_cruise=404       # kts
 v_max=426          # kts
 v_landing=125      # kts
-sprite=avrorj.png
-sprite_red=avrorj_red.png
+sprite=avrorj
+sprite_red=avrorj_red
 category=medium
 

@@ -10,6 +10,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include "aircraft_template.hpp"
+
 class Aircraft: protected sf::Sprite {
 
     std::reference_wrapper<const sf::Texture> yellow;
@@ -21,14 +23,25 @@ class Aircraft: protected sf::Sprite {
     float desiredRotation = 0.f;
     float maxRotation = 3.5f;
 
-    int64_t stallSpeed = 130;
-    int64_t maxSpeed = 450;
+    std::string type;
+    int64_t mtow;
+    int64_t maxFuel;
+    int64_t maxAltitude;
+    int64_t range;
+    int64_t vCruise;
+    int64_t vMax;
+    int64_t vLanding;
+    int64_t vStall;
+    WeightCategory weightCategory;
 
     void rotateAircraft();
 
+    Aircraft(const sf::Texture & yellow, const sf::Texture & red, float scale);
+
 public:
 
-    Aircraft(const sf::Texture & yellow, const sf::Texture & red, float scale);
+    static Aircraft fromTemplate(const AircraftTemplate &tmpl,
+                                 const std::unordered_map<std::string, sf::Texture> &textures, float scale);
 
     void update();
     void setPosition(float x, float y);

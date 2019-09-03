@@ -6,7 +6,7 @@ range=8000         # nmi
 v_cruise=488       # kts
 v_max=511          # kts
 v_landing=140      # kts
-sprite=a380.png
-sprite_red=a380_red.png
+sprite=a380
+sprite_red=a380_red
 category=super
 

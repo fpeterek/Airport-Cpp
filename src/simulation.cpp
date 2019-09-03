@@ -4,9 +4,8 @@
 
 #include <SFML/Window/Event.hpp>
 #include <iostream>
-#include <fstream>
-#include <random.hpp>
 
+#include "random.hpp"
 #include "simulation.hpp"
 
 void Simulation::initBackground() {
@@ -16,7 +15,7 @@ void Simulation::initBackground() {
 
 void Simulation::loadTexture(const std::string & texture) {
     sf::Texture tx;
-    tx.loadFromFile("resources/" + texture + ".png");
+    tx.loadFromFile("resources/sprites/" + texture + ".png");
     tx.setSmooth(true);
 
     aircraftTextures[texture] = tx;
@@ -34,6 +33,24 @@ void Simulation::loadAircraftTextures() {
 }
 
 void Simulation::loadTextureList(const std::string &filename) {
+    textureList = loadList(filename);
+}
+
+void Simulation::loadTemplates() {
+
+    AircraftTemplateParser atp;
+
+    for (const std::string & tmpl : templateList) {
+        templates[tmpl] = atp.parseFile("resources/aircraft/" + tmpl + ".ac");
+    }
+
+}
+
+void Simulation::loadTemplateList(const std::string & filename) {
+    templateList = loadList(filename);
+}
+
+std::vector<std::string> Simulation::loadList(const std::string & filename) {
 
     std::ifstream is(filename);
 
@@ -41,13 +58,17 @@ void Simulation::loadTextureList(const std::string &filename) {
         throw std::runtime_error("Could not open file " + filename);
     }
 
+    std::vector<std::string> list;
+
     while (not is.eof()) {
         std::string line;
         std::getline(is, line);
         if (not line.empty()) {
-            textureList.emplace_back(line);
+            list.emplace_back(line);
         }
     }
+
+    return list;
 
 }
 
@@ -56,6 +77,11 @@ void Simulation::initTextures() {
     backgroundTexture.setSmooth(true);
     loadTextureList("resources/textures.txt");
     loadAircraftTextures();
+}
+
+void Simulation::initTemplates() {
+    loadTemplateList("resources/aircraft.txt");
+    loadTemplates();
 }
 
 void Simulation::initWindow() {
@@ -72,6 +98,7 @@ void Simulation::calcScale() {
 Simulation::Simulation() {
     initWindow();
     initTextures();
+    initTemplates();
     calcScale();
     initBackground();
 
@@ -95,11 +122,6 @@ void Simulation::update() {
 }
 
 void Simulation::run() {
-
-    aircraft.emplace_back(aircraftTextures["a380"], aircraftTextures["a380_red"], scale);
-    aircraft.back().setHeading(300);
-    aircraft.back().setPosition(width / 2, height / 2);
-    aircraft.back().setVelocity(410);
 
     while (window.isOpen()) {
 
@@ -161,6 +183,9 @@ void Simulation::onMouseScroll(const sf::Event::MouseWheelScrollEvent event) {
     float delta = event.delta;
     bool isNeg = delta > 0;
     int64_t calcDelta = (int64_t)(std::ceil(std::abs(delta)) * 10) / 10 * (isNeg ? 5 : -5);
+    if (calcDelta) {
+        std::cout << delta << " -> " << calcDelta << std::endl;
+    }
     changeAircraftVelocity(calcDelta);
 
 }
@@ -184,7 +209,8 @@ void Simulation::onKeyPress(const sf::Keyboard::Key key) {
 
 void Simulation::randomAircraft() {
 
-    std::string sprite = textureList[Random::randUInt(0, textureList.size() - 1)];
+    std::string tmplStr = templateList[Random::randUInt(0, templateList.size() - 1)];
+    const AircraftTemplate & tmpl = templates.at(tmplStr);
 
     /////////////////////////////
     //                         //
@@ -238,9 +264,9 @@ void Simulation::randomAircraft() {
     const int64_t roughHeading = Random::randInt(hBounds.first * 10, hBounds.second * 10);
     const int64_t heading = (roughHeading % 3600) / 10.0;
 
-    const int64_t velocity = Random::randInt(200, 450);
+    const int64_t velocity = Random::randInt(tmpl.vLanding, tmpl.vMax);
 
-    aircraft.emplace_back(aircraftTextures[sprite], aircraftTextures[sprite + "_red"], scale);
+    aircraft.emplace_back(Aircraft::fromTemplate(tmpl, aircraftTextures, scale));
     Aircraft & ac = aircraft.back();
     ac.setPosition(x, y);
     ac.setHeading(heading);
@@ -254,16 +280,19 @@ void Simulation::removeDistantAircraft(const size_t index) {
         return;
     }
 
+    if (index == selectedIndex) {
+        return removeDistantAircraft(index + 1);
+    }
+
     const Aircraft & ac = aircraft[index];
     const int64_t x = ac.getPosition().x;
     const int64_t y = ac.getPosition().y;
 
     const bool xCond = (x < -removalBound) or ((int64_t)width + removalBound < x);
     const bool yCond = (y < -removalBound) or ((int64_t)height + removalBound < y);
-    const bool sCond = not ac.isSelected();
 
-    if ((xCond or yCond) and sCond) {
-        if (index < selectedIndex) {
+    if (xCond or yCond) {
+        if (aircraftSelected() and index < selectedIndex) {
             --selectedIndex;
         }
         aircraft.erase(aircraft.begin() + index);
@@ -317,6 +346,9 @@ bool Simulation::aircraftSelected() {
 }
 
 Aircraft & Simulation::selected() {
+    if (not aircraftSelected()) {
+        throw std::runtime_error("Attempting to access selected aircraft when no aircraft is selected");
+    }
     return aircraft[selectedIndex];
 }
 

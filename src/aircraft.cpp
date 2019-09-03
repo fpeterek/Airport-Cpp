@@ -85,11 +85,31 @@ bool Aircraft::contains(const float x, const float y) const {
 
 void Aircraft::changeVelocityBy(int64_t delta) {
     velocity += delta;
-    if (velocity > maxSpeed) {
-        velocity = maxSpeed;
+    if (velocity > vMax) {
+        velocity = vMax;
     }
-    if (velocity < stallSpeed) {
-        velocity = stallSpeed;
+    if (velocity < vStall) {
+        velocity = vStall;
     }
+}
+
+Aircraft Aircraft::fromTemplate(const AircraftTemplate & tmpl,
+        const std::unordered_map<std::string, sf::Texture> & textures, const float scale) {
+
+    Aircraft ac(textures.at(tmpl.sprite), textures.at(tmpl.spriteSelected), scale);
+
+    ac.type = tmpl.type;
+    ac.mtow = tmpl.mtow;
+    ac.maxFuel = tmpl.maxFuel;
+    ac.maxAltitude = tmpl.maxAltitude;
+    ac.range = tmpl.range;
+    ac.vCruise = tmpl.vCruise;
+    ac.vMax = tmpl.vMax;
+    ac.vLanding = tmpl.vLanding;
+    ac.vStall = tmpl.vStall;
+    ac.weightCategory = tmpl.weightCategory;
+
+    return ac;
+
 }
 

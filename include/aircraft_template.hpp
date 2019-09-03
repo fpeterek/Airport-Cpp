@@ -10,16 +10,24 @@
 #include <ostream>
 #include <unordered_map>
 
-enum class WeightCategory {
-    Light,
-    Medium,
-    Heavy,
-    Super
+#include "weight_category.hpp"
+
+struct AircraftTemplate {
+
+    std::string type;
+    uint64_t mtow;
+    uint64_t maxFuel;
+    uint64_t maxAltitude;
+    uint64_t range;
+    uint64_t vCruise;
+    uint64_t vMax;
+    uint64_t vLanding;
+    uint64_t vStall;
+    std::string sprite;
+    std::string spriteSelected;
+    WeightCategory weightCategory;
+
 };
-
-std::ostream & operator<<(std::ostream & os, WeightCategory cat);
-
-struct AircraftTemplate;
 
 class AircraftTemplateParser {
 
@@ -32,8 +40,6 @@ class AircraftTemplateParser {
     std::pair<std::string, std::string> sprites;
     WeightCategory category;
 
-    friend AircraftTemplate;
-    AircraftTemplate createAircraft();
     AircraftTemplate createTemplate();
     std::ifstream openFile(const std::string & filename);
     void loadFile(std::ifstream & is);
@@ -48,31 +54,6 @@ class AircraftTemplateParser {
 public:
 
     AircraftTemplate parseFile(const std::string & filename);
-
-};
-
-struct AircraftTemplate {
-
-private:
-
-    // Only AircraftTemplateParser can construct this struct
-    AircraftTemplate();
-    friend AircraftTemplate AircraftTemplateParser::createAircraft();
-
-public:
-
-    std::string type;
-    uint64_t mtow;
-    uint64_t maxFuel;
-    uint64_t maxAltitude;
-    uint64_t range;
-    uint64_t vCruise;
-    uint64_t vMax;
-    uint64_t vLanding;
-    uint64_t vStall;
-    std::string sprite;
-    std::string spriteSelected;
-    WeightCategory weightCategory;
 
 };
 

@@ -4,32 +4,6 @@
 
 #include "aircraft_template.hpp"
 
-std::ostream & operator<<(std::ostream & os, WeightCategory cat) {
-
-    std::string str;
-
-    switch (cat) {
-        case WeightCategory::Light:
-            str = "Light"; break;
-        case WeightCategory::Medium:
-            str = "Medium"; break;
-        case WeightCategory::Heavy:
-            str = "Heavy"; break;
-        case WeightCategory::Super:
-            str = "Super"; break;
-    }
-
-    return os << str;
-
-}
-
-
-AircraftTemplate::AircraftTemplate() { }
-
-AircraftTemplate AircraftTemplateParser::createAircraft() {
-    return AircraftTemplate();
-}
-
 std::unordered_map<std::string, WeightCategory> AircraftTemplateParser::categories = {
         { "light", WeightCategory::Light   },
         { "medium", WeightCategory::Medium },
@@ -140,7 +114,7 @@ void AircraftTemplateParser::parseLine(const std::string &line) {
 
 AircraftTemplate AircraftTemplateParser::createTemplate() {
 
-    AircraftTemplate tmpl = createAircraft();
+    AircraftTemplate tmpl;
 
     tmpl.type = type;
 

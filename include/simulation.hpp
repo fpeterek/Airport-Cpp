@@ -22,10 +22,13 @@ class Simulation {
 
     std::vector<std::string> textureList;
     std::unordered_map<std::string, sf::Texture> aircraftTextures;
+    std::vector<std::string> templateList;
+    std::unordered_map<std::string, AircraftTemplate> templates;
+
     std::vector<Aircraft> aircraft;
 
     static const size_t noAircraftSelected = -1;
-    size_t selectedIndex = -1;
+    size_t selectedIndex = noAircraftSelected;
 
     float scale = 1.f;
 
@@ -50,7 +53,13 @@ class Simulation {
     void loadAircraftTextures();
     void loadTextureList(const std::string & filename);
 
+    void loadTemplates();
+    void loadTemplateList(const std::string & filename);
+
+    static std::vector<std::string> loadList(const std::string & filename);
+
     void initTextures();
+    void initTemplates();
     void initBackground();
     void initWindow();
     void calcScale();
