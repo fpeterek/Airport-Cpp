@@ -13,6 +13,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "aircraft.hpp"
+#include "aircraft_removal_strategy.hpp"
 
 class Simulation {
 
@@ -37,7 +38,10 @@ class Simulation {
     uint64_t height;
 
     int64_t removalBound;
+    size_t removalIndex = 0;
     const uint64_t aircraftLimit = 20;
+
+    AircraftRemovalStrategy * removalStrategy;
 
     bool aircraftSelected();
     Aircraft & selected();
@@ -46,7 +50,6 @@ class Simulation {
     void update();
     void render();
     void randomAircraft();
-    void removeDistantAircraft(size_t index = 0);
 
     void loadTexture(const std::string & texture);
     void loadAircraftTexturePair(const std::string & aircraft);
@@ -78,6 +81,7 @@ class Simulation {
 public:
 
     Simulation();
+    ~Simulation();
 
     void run();
 

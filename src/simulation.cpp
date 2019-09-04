@@ -105,6 +105,14 @@ Simulation::Simulation() {
     width = window.getSize().x;
     height = window.getSize().y;
     removalBound = width / 2;
+
+    removalStrategy = new ProgressiveRemovalStrategy(aircraft, selectedIndex, width, height);
+    //removalStrategy = new PeriodicalCheckStrategy(aircraft, selectedIndex, width, height, 30);
+
+}
+
+Simulation::~Simulation() {
+    delete removalStrategy;
 }
 
 void Simulation::update() {
@@ -117,7 +125,7 @@ void Simulation::update() {
         a.update();
     }
 
-    removeDistantAircraft();
+    removalStrategy->removeDistantAircraft();
 
 }
 
@@ -268,35 +276,6 @@ void Simulation::randomAircraft() {
     ac.setPosition(x, y);
     ac.setHeading(heading);
     ac.setVelocity(velocity);
-
-}
-
-void Simulation::removeDistantAircraft(const size_t index) {
-
-    if (index >= aircraft.size()) {
-        return;
-    }
-
-    if (index == selectedIndex) {
-        return removeDistantAircraft(index + 1);
-    }
-
-    const Aircraft & ac = aircraft[index];
-    const int64_t x = ac.getPosition().x;
-    const int64_t y = ac.getPosition().y;
-
-    const bool xCond = (x < -removalBound) or ((int64_t)width + removalBound < x);
-    const bool yCond = (y < -removalBound) or ((int64_t)height + removalBound < y);
-
-    if (xCond or yCond) {
-        if (aircraftSelected() and index < selectedIndex) {
-            --selectedIndex;
-        }
-        aircraft.erase(aircraft.begin() + index);
-        return removeDistantAircraft(index);
-    }
-
-    removeDistantAircraft(index + 1);
 
 }
 
