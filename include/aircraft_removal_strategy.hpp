@@ -14,11 +14,13 @@ class Simulation;
 class AircraftRemovalStrategy {
 
     const size_t noAircraftSelected = -1;
+    std::vector<Aircraft> & aircraftMutable;
+    size_t & selectedIndexMutable;
 
 protected:
 
-    std::vector<Aircraft> & aircraft;
-    size_t & selectedIndex;
+    const std::vector<Aircraft> & aircraft;
+    const size_t & selectedIndex;
     const int64_t width;
     const int64_t height;
     const int64_t removalBound;

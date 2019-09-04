@@ -8,7 +8,9 @@
 AircraftRemovalStrategy::AircraftRemovalStrategy(
         std::vector<Aircraft> & aircraft, size_t & selectedIndex, const int64_t width, const int64_t height) :
             aircraft(aircraft),
+            aircraftMutable(aircraft),
             selectedIndex(selectedIndex),
+            selectedIndexMutable(selectedIndex),
             width(width),
             height(height),
             removalBound(std::max(width, height) / 2) { }
@@ -29,7 +31,7 @@ void AircraftRemovalStrategy::removeDistantAircraft() {
 
 }
 
-bool AircraftRemovalStrategy::subjectForRemoval(const Aircraft &ac) {
+bool AircraftRemovalStrategy::subjectForRemoval(const Aircraft & ac) {
 
     const int64_t x = ac.getPosition().x;
     const int64_t y = ac.getPosition().y;
@@ -43,12 +45,12 @@ bool AircraftRemovalStrategy::subjectForRemoval(const Aircraft &ac) {
 
 void AircraftRemovalStrategy::adjustSelected(const int64_t indexOfRemoved) {
     if (aircraftSelected() and indexOfRemoved < selectedIndex) {
-        --selectedIndex;
+        --selectedIndexMutable;
     }
 }
 
 void AircraftRemovalStrategy::removeAtIndex(size_t index) {
-    aircraft.erase(aircraft.begin() + index);
+    aircraftMutable.erase(aircraft.begin() + index);
     adjustSelected(index);
 }
 
