@@ -11,21 +11,12 @@
 #include <unordered_map>
 
 #include "weight_category.hpp"
+#include "aircraft_base.hpp"
 
-struct AircraftTemplate {
+struct AircraftTemplate: public AircraftBase {
 
-    std::string type;
-    uint64_t mtow;
-    uint64_t maxFuel;
-    uint64_t maxAltitude;
-    uint64_t range;
-    uint64_t vCruise;
-    uint64_t vMax;
-    uint64_t vLanding;
-    uint64_t vStall;
     std::string sprite;
     std::string spriteSelected;
-    WeightCategory weightCategory;
 
 };
 

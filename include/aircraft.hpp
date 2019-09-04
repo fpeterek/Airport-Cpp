@@ -11,8 +11,9 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "aircraft_template.hpp"
+#include "aircraft_base.hpp"
 
-class Aircraft: protected sf::Sprite {
+class Aircraft: protected sf::Sprite, protected AircraftBase {
 
     std::reference_wrapper<const sf::Texture> yellow;
     std::reference_wrapper<const sf::Texture> red;
@@ -22,17 +23,6 @@ class Aircraft: protected sf::Sprite {
     int64_t velocity = 0;
     float desiredRotation = 0.f;
     float maxRotation = 3.5f;
-
-    std::string type;
-    int64_t mtow;
-    int64_t maxFuel;
-    int64_t maxAltitude;
-    int64_t range;
-    int64_t vCruise;
-    int64_t vMax;
-    int64_t vLanding;
-    int64_t vStall;
-    WeightCategory weightCategory;
 
     void rotateAircraft();
 

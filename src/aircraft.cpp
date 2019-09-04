@@ -98,16 +98,8 @@ Aircraft Aircraft::fromTemplate(const AircraftTemplate & tmpl,
 
     Aircraft ac(textures.at(tmpl.sprite), textures.at(tmpl.spriteSelected), scale);
 
-    ac.type = tmpl.type;
-    ac.mtow = tmpl.mtow;
-    ac.maxFuel = tmpl.maxFuel;
-    ac.maxAltitude = tmpl.maxAltitude;
-    ac.range = tmpl.range;
-    ac.vCruise = tmpl.vCruise;
-    ac.vMax = tmpl.vMax;
-    ac.vLanding = tmpl.vLanding;
-    ac.vStall = tmpl.vStall;
-    ac.weightCategory = tmpl.weightCategory;
+    AircraftBase & base = ac;
+    base = (AircraftBase)tmpl;
 
     return ac;
 
