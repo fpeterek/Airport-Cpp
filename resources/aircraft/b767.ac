@@ -1,0 +1,12 @@
+type=Boeing 767-400ER
+mtow=204116        # Kg
+fuel=91380         # Litres
+max_altitude=43000 # Feet
+range=5625         # nmi
+v_cruise=470       # kts
+v_max=493          # kts
+v_landing=150      # kts
+sprite=b787
+sprite_red=b787_red
+category=heavy
+

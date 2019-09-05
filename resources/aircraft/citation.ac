@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
+type=Cessna Citation Longitude
+mtow=17917         # Kg
+fuel=730           # Litres
+max_altitude=45000 # Feet
+range=3500         # nmi
+v_cruise=465       # kts
+v_max=476          # kts
 v_landing=125      # kts
-v_stall=120        # kts
- 
+sprite=citation
+sprite_red=citation_red
+category=medium
+

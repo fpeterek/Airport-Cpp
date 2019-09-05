@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+type=Boeing 777-300ER
+mtow=351533        # Kg
+fuel=181283        # Litres
+max_altitude=43100 # Feet
+range=7370         # nmi
+v_cruise=482       # kts
+v_max=511          # kts
+v_landing=150      # kts
+sprite=b777
+sprite_red=b777_red
+category=heavy
+

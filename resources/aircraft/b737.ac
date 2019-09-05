@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
+type=Boeing 737 MAX 8
+mtow=82191         # Kg
+fuel=25816         # Litres
 max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+range=3550         # nmi
+v_cruise=453       # kts
+v_max=490          # kts
+v_landing=145      # kts
+sprite=b737
+sprite_red=b737_red
+category=medium
+

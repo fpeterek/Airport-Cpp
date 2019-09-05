@@ -8,5 +8,5 @@ v_max=525          # kts
 v_landing=125      # kts
 sprite=b707
 sprite_red=b707_red
-category=medium
+category=heavy
 

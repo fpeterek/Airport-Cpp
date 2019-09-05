@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+type=Boeing 747-8i
+mtow=447696        # Kg
+fuel=238610        # Litres
+max_altitude=43100 # Feet
+range=8000         # nmi
+v_cruise=493       # kts
+v_max=516          # kts
+v_landing=155      # kts
+sprite=b747
+sprite_red=b747_red
+category=heavy
+

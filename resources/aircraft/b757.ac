@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+type=Boeing 757-200
+mtow=115660        # Kg
+fuel=43490         # Litres
+max_altitude=42000 # Feet
+range=3915         # nmi
+v_cruise=461       # kts
+v_max=496          # kts
+v_landing=140      # kts
+sprite=b757
+sprite_red=b757_red
+category=medium
+

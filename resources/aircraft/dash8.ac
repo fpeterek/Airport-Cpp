@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+type=Bombardier Dash 8 Q400
+mtow=30481         # Kg
+fuel=6256          # Litres
+max_altitude=27000 # Feet
+range=1100         # nmi
+v_cruise=330       # kts
+v_max=360          # kts
+v_landing=120      # kts
+sprite=dash8
+sprite_red=dash8_red
+category=medium
+
