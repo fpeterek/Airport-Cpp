@@ -269,7 +269,8 @@ void Simulation::randomAircraft() {
     const int64_t roughHeading = Random::randInt(hBounds.first * 10, hBounds.second * 10);
     const int64_t heading = (roughHeading % 3600) / 10.0;
 
-    const int64_t velocity = Random::randInt(tmpl.vLanding, tmpl.vMax);
+    const int64_t variable = tmpl.vCruise - tmpl.vLanding;
+    const int64_t velocity = tmpl.vLanding + std::sqrt(Random::randInt(0, variable * variable));
 
     aircraft.emplace_back(Aircraft::fromTemplate(tmpl, aircraftTextures, scale));
     Aircraft & ac = aircraft.back();
