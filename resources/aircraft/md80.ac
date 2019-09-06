@@ -1,9 +1,12 @@
-type=Airbus A220-300
-mtow=69900         # Kg
-fuel=21508         # Litres
-max_altitude=41000 # Feet
-range=3350         # nmi
-v_cruise=447       # kts
-v_landing=125      # kts
-v_stall=120        # kts
- 
+type=McDonnell Douglas MD-80
+mtow=72600         # Kg
+fuel=26000         # Litres
+max_altitude=37000 # Feet
+range=2550         # nmi
+v_cruise=472       # kts
+v_max=499          # kts
+v_landing=130      # kts
+sprite=md80
+sprite_red=md80_red
+category=medium
+
