@@ -7,7 +7,7 @@
 #include "aircraft.hpp"
 
 Aircraft::Aircraft(const sf::Texture & yellow, const sf::Texture & red, const float scale) : yellow(yellow), red(red) {
-    setScale(scale * 1.5, scale * 1.5);
+    setScale(scale * 1.5f, scale * 1.5f);
     setTexture(this->yellow.get());
     setOrigin(getTextureRect().width / 2, getTextureRect().height / 2);
 }
