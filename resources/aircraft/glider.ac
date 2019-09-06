@@ -7,6 +7,6 @@ v_cruise=70        # kts
 v_max=120          # kts
 v_landing=45       # kts
 sprite=glider
-sprite_red=glider
+sprite_red=glider_red
 category=light
 
